@@ -46,32 +46,23 @@ npm test
 4. Артефакты публикуются на GitHub Pages.
 
 ## Скриншоты для отчета
-*(Здесь будут размещены скриншоты для отчета)*
-- [ ] Главная страница приложения с темой ВКР
-- [ ] Аналитический дашборд с метриками
-- [ ] Сводная таблица результатов
-- [ ] Демонстрация компонентов (Web Components, React, Vue, Angular)
-- [ ] Блок методики и выводов
-- [ ] Успешная сборка Docker-образа
-- [ ] Успешный CI/CD pipeline (GitHub Actions)
-
 **1. Главная страница приложения с темой ВКР**  
-![Project Home Page](1.png)
+![](./img/1-Home-Page.png)
 
 **2. Аналитический дашборд с метриками**  
-![Analytics Dashboard](2.png)
+![](./img/2-Analytics-Dashboard.png)
 
 **3. Сводная таблица результатов**  
-![Benchmark Results Table](3.png)
+![](./img/3-Benchmark-Results-Table.png)
 
-**4. Демонстрация компонентов (Web Components, React, Vue, Angular)**  
-![UI Components Comparison](4.png)
+**4. Демонстрация компонентов Web Components, React, Vue, Angular**  
+![](./img/4-UI-Components-Comparison.png)
 
 **5. Блок методики и выводов**  
-![Methodology and Conclusions](5.png)
+![](./img/5-Methodology-and-Conclusions.png)
 
 **6. Успешная сборка Docker-образа**  
-![Successful Docker Build](6.png)
+![](./img/6-Successful-Docker-Build.png)
 
-**7. Успешный CI/CD pipeline (GitHub Actions)**  
-![CI/CD Pipeline Execution](7.png)
+**7. Успешный CI/CD pipeline GitHub Actions**  
+![](./img/7-CD-Pipeline-Execution.png)
