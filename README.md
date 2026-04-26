@@ -57,6 +57,7 @@ npm test
 
 **4. Демонстрация компонентов Web Components, React, Vue, Angular**  
 ![](./img/4-UI-Components-Comparison.png)
+![](./img/4-1-UI-Components-Comparison.png)
 
 **5. Блок методики и выводов**  
 ![](./img/5-Methodology-and-Conclusions.png)
