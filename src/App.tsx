@@ -48,7 +48,7 @@ const App: React.FC = () => {
       <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC', color: '#0F172A', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         <header style={{ background: '#FFFFFF', borderBottom: '1px solid #E2E8F0', padding: '1rem 0', position: 'sticky', top: 0, zIndex: 100 }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h1 style={{ margin: 0, fontSize: '1.25rem', color: '#0F172A', fontWeight: 800 }}>UI <span style={{ color: '#2563EB' }}>Research</span></h1>
+            <h1 style={{ margin: 0, fontSize: '1.25rem', color: '#0F172A', fontWeight: 800 }}>Преддипломная практика <span style={{ color: '#2563EB' }}>Иванов Н.Ю</span></h1>
             <nav style={{ display: 'flex', gap: '2rem' }}>
               <Link to="/" style={{ color: '#475569', textDecoration: 'none', fontWeight: 600 }}>Главная</Link>
               <Link to="/compare" style={{ color: '#475569', textDecoration: 'none', fontWeight: 600 }}>Дашборд</Link>
@@ -62,6 +62,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/compare" element={<ComparePage />} />
+            <Route path="*" element={<Home />} />
           </Routes>
         </main>
       </div>
