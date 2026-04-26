@@ -15,7 +15,6 @@
 - `/src/components/react/` — реализация базовых компонентов на React.
 - `/src/components/web-components/` — реализация компонентов на нативных Web Components.
 - `/src/pages/Compare.tsx` — интеграция компонентов, дашборд с метриками и демонстрация всех 4-х подходов.
-- `/docs/` — документация для ВКР.
 - `Dockerfile` и `docker-compose.yml` — конфигурация контейнеризации.
 - `.github/workflows/` — конвейер CI/CD.
 
