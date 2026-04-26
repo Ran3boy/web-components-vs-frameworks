@@ -1,6 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { ReactProductCard } from '../components/react/ProductCard';
 import '../components/web-components/ProductCard';
+import { ReactModal } from '../components/react/Modal';
+import '../components/web-components/Modal';
+import { ReactStateButton } from '../components/react/StateButton';
+import '../components/web-components/StateButton';
+import { ReactFeedbackForm } from '../components/react/FeedbackForm';
+import '../components/web-components/FeedbackForm';
+import { ReactItemList } from '../components/react/ItemList';
+import '../components/web-components/ItemList';
 import { Product } from '../components/shared/types';
 
 const demoProduct: Product = {
@@ -57,6 +65,54 @@ export const ComparePage: React.FC = () => {
             price={demoProduct.price}
             image-url={demoProduct.imageUrl}
           ></wc-product-card>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Реализация Модального окна (React)</h3>
+          <ReactModal />
+        </div>
+
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Реализация Модального окна (WC)</h3>
+          <wc-modal></wc-modal>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Кнопка с состояниями (React)</h3>
+          <ReactStateButton />
+        </div>
+
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Кнопка с состояниями (WC)</h3>
+          <wc-state-button></wc-state-button>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Форма обратной связи (React)</h3>
+          <ReactFeedbackForm />
+        </div>
+
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Форма обратной связи (WC)</h3>
+          <wc-feedback-form></wc-feedback-form>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Список элементов (React)</h3>
+          <ReactItemList />
+        </div>
+
+        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+          <h3>Список элементов (WC)</h3>
+          <wc-item-list></wc-item-list>
         </div>
       </div>
 
