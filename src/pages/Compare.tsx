@@ -9,7 +9,7 @@ import { ReactFeedbackForm } from '../components/react/FeedbackForm';
 import '../components/web-components/FeedbackForm';
 import { ReactItemList } from '../components/react/ItemList';
 import '../components/web-components/ItemList';
-import { Product } from '../components/shared/types';
+import { Product } from '../types';
 
 const demoProduct: Product = {
   id: '123',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Product } from '../shared/types';
+import { Product } from '../../types';
 
 interface Props {
   product: Product;
