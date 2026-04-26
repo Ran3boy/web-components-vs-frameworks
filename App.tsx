@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { ComparePage } from './pages/Compare';
 
 const Home = () => (
   <div>
@@ -12,7 +11,7 @@ const Home = () => (
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter basename="/web-components-vs-frameworks">
+    <HashRouter>
       <header style={{ padding: '1rem 2rem', background: '#282c34', color: 'white' }}>
         <h1 style={{ margin: '0 0 1rem 0' }}>Сравнение UI-технологий</h1>
         <nav style={{ display: 'flex', gap: '1rem' }}>
@@ -23,7 +22,7 @@ const App: React.FC = () => {
       <main style={{ padding: '2rem' }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/compare" element={<div>Раздел сравнения компонентов в разработке...</div>} />
         </Routes>
       </main>
     </BrowserRouter>
