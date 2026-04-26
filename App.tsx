@@ -62,6 +62,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/compare" element={<ComparePage />} />
+            <Route path="*" element={<Home />} />
           </Routes>
         </main>
       </div>
