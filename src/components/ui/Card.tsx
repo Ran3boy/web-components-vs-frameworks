@@ -3,10 +3,11 @@ import React from 'react';
 interface CardProps {
   children: React.ReactNode;
   style?: React.CSSProperties;
+  id?: string;
 }
 
-export const Card: React.FC<CardProps> = ({ children, style }) => (
-  <div style={{ 
+export const Card: React.FC<CardProps> = ({ children, style, id }) => (
+  <div id={id} style={{ 
     background: '#FFFFFF', 
     borderRadius: '16px', 
     border: '1px solid #E2E8F0', 
