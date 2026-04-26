@@ -253,6 +253,16 @@ export class ProductCardComponent { @Input() product: Product; }`;
           <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
             <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>React</h4><ReactModal /><ReactStateButton /></div>
             <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>Web Components</h4><wc-modal></wc-modal><wc-state-button></wc-state-button></div>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Vue.js</h4>
+              <div><button style={{ background: '#10B981', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Открыть Vue Модалку</button></div>
+              <div><button style={{ background: '#10B981', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>+ Подписаться</button></div>
+            </div>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Angular</h4>
+              <div><button style={{ background: '#DD0031', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Открыть Angular Модалку</button></div>
+              <div><button style={{ background: '#DD0031', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>+ Подписаться</button></div>
+            </div>
           </div>
         </Card>
 
@@ -261,6 +271,32 @@ export class ProductCardComponent { @Input() product: Product; }`;
           <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
             <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '2rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>React</h4><ReactFeedbackForm /><ReactItemList /></div>
             <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '2rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>Web Components</h4><wc-feedback-form></wc-feedback-form><wc-item-list></wc-item-list></div>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Vue.js</h4>
+              <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: 'white', padding: '16px', borderRadius: '8px', border: '1px solid #ccc' }}>
+                <input type="text" placeholder="Ваше имя" required style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+                <input type="email" placeholder="Email" required style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+                <textarea placeholder="Сообщение" required rows={3} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical' }}></textarea>
+                <button type="submit" style={{ background: '#10B981', color: 'white', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Отправить</button>
+              </form>
+              <div style={{ background: 'white', padding: '16px', borderRadius: '8px', border: '1px solid #ccc' }}>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}><input type="text" placeholder="Новый элемент" style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} /><button type="button" style={{ background: '#10B981', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer' }}>Добавить</button></div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}><li style={{ color: '#6c757d', textAlign: 'center' }}>Список пуст</li></ul>
+              </div>
+            </div>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Angular</h4>
+              <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: 'white', padding: '16px', borderRadius: '8px', border: '1px solid #ccc' }}>
+                <input type="text" placeholder="Ваше имя" required style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+                <input type="email" placeholder="Email" required style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} />
+                <textarea placeholder="Сообщение" required rows={3} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical' }}></textarea>
+                <button type="submit" style={{ background: '#DD0031', color: 'white', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Отправить</button>
+              </form>
+              <div style={{ background: 'white', padding: '16px', borderRadius: '8px', border: '1px solid #ccc' }}>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}><input type="text" placeholder="Новый элемент" style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }} /><button type="button" style={{ background: '#DD0031', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer' }}>Добавить</button></div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}><li style={{ color: '#6c757d', textAlign: 'center' }}>Список пуст</li></ul>
+              </div>
+            </div>
           </div>
         </Card>
       </div>
