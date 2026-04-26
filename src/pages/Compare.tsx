@@ -20,7 +20,7 @@ const demoProduct: Product = {
   name: 'Умная колонка AI',
   description: 'Компактная умная колонка с голосовым помощником для управления умным домом.',
   price: 3990,
-  imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Amazon_Echo_Dot_3rd_Gen.jpg/600px-Amazon_Echo_Dot_3rd_Gen.jpg',
+  imageUrl: 'https://cdn1.technopark.ru/technopark/photos_resized/product/1000_1000/308938/1_308938.jpg',
 };
 
 export const ComparePage: React.FC = () => {
@@ -75,6 +75,28 @@ export const ComparePage: React.FC = () => {
     \`;
   }
 }`;
+
+  const vueCodeSnippet = `<template>
+  <div class="card">
+    <img :src="product.imageUrl" :alt="product.name" />
+    <h4>{{ product.name }}</h4>
+    <p>{{ product.description }}</p>
+    <button @click="addToCart">В корзину</button>
+  </div>
+</template>`;
+
+  const angularCodeSnippet = `@Component({
+  selector: 'app-product-card',
+  template: \`
+    <div class="card">
+      <img [src]="product.imageUrl" [alt]="product.name" />
+      <h4>{{ product.name }}</h4>
+      <p>{{ product.description }}</p>
+      <button (click)="addToCart()">В корзину</button>
+    </div>
+  \`
+})
+export class ProductCardComponent { @Input() product: Product; }`;
 
   return (
     <div>
@@ -192,6 +214,36 @@ export const ComparePage: React.FC = () => {
               <h4 style={{ color: '#475569', marginTop: 0 }}>Web Components</h4>
               <div style={{ maxWidth: '400px' }}><wc-product-card ref={wcRef} product-id={demoProduct.id} name={demoProduct.name} description={demoProduct.description} price={demoProduct.price} image-url={demoProduct.imageUrl}></wc-product-card></div>
               <CodeBlock code={wcCodeSnippet} title="Web Component (Custom Elements + Attributes)" />
+            </div>
+            <div style={{ flex: '1 1 400px' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Vue.js</h4>
+              <div style={{ maxWidth: '400px' }}>
+                <div style={{ background: 'white', border: '1px solid #ccc', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                  <img src={demoProduct.imageUrl} alt={demoProduct.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <h4 style={{ marginTop: 0, marginBottom: '8px' }}>{demoProduct.name} (Vue)</h4>
+                    <p style={{ color: '#666', marginBottom: '16px', flex: 1 }}>{demoProduct.description}</p>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '16px' }}>{demoProduct.price} ₽</div>
+                    <button onClick={() => alert('[Vue] Товар добавлен в корзину!')} style={{ background: '#10B981', color: 'white', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>В корзину</button>
+                  </div>
+                </div>
+              </div>
+              <CodeBlock code={vueCodeSnippet} title="Vue (SFC + Directives)" />
+            </div>
+            <div style={{ flex: '1 1 400px' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Angular</h4>
+              <div style={{ maxWidth: '400px' }}>
+                <div style={{ background: 'white', border: '1px solid #ccc', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                  <img src={demoProduct.imageUrl} alt={demoProduct.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <h4 style={{ marginTop: 0, marginBottom: '8px' }}>{demoProduct.name} (Angular)</h4>
+                    <p style={{ color: '#666', marginBottom: '16px', flex: 1 }}>{demoProduct.description}</p>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '16px' }}>{demoProduct.price} ₽</div>
+                    <button onClick={() => alert('[Angular] Товар добавлен в корзину!')} style={{ background: '#DD0031', color: 'white', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>В корзину</button>
+                  </div>
+                </div>
+              </div>
+              <CodeBlock code={angularCodeSnippet} title="Angular (TypeScript + Decorators)" />
             </div>
           </div>
         </Card>
