@@ -10,13 +10,17 @@ import '../components/web-components/FeedbackForm';
 import { ReactItemList } from '../components/react/ItemList';
 import '../components/web-components/ItemList';
 import { Product } from '../types';
+import { benchmarkResults } from '../data/benchmarkResults';
+import { Card } from '../components/ui/Card';
+import { MetricCard } from '../components/ui/MetricCard';
+import { CodeBlock } from '../components/ui/CodeBlock';
 
 const demoProduct: Product = {
   id: '123',
   name: 'Умная колонка AI',
   description: 'Компактная умная колонка с голосовым помощником для управления умным домом.',
   price: 3990,
-  imageUrl: 'https://images.unsplash.com/photo-1543512214-318c7553f230?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+  imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Amazon_Echo_Dot_3rd_Gen.jpg/600px-Amazon_Echo_Dot_3rd_Gen.jpg',
 };
 
 export const ComparePage: React.FC = () => {
@@ -44,94 +48,212 @@ export const ComparePage: React.FC = () => {
     alert(`[React] Товар ${id} добавлен в корзину!`);
   };
 
+  // Вычисляем лучшие показатели для дашборда
+  const bestLoadTime = Math.min(...benchmarkResults.map(r => r.loadTimeMs));
+  const bestBundle = Math.min(...benchmarkResults.map(r => r.bundleSizeKb));
+  const maxScore = Math.max(...benchmarkResults.map(r => r.finalScore));
+  const maxMaintainability = Math.max(...benchmarkResults.map(r => r.maintainabilityScore));
+
+  const reactCodeSnippet = `export const ReactProductCard: React.FC<Props> = ({ product }) => (
+  <div className="card">
+    <img src={product.imageUrl} alt={product.name} />
+    <h4>{product.name}</h4>
+    <p>{product.description}</p>
+    <button>В корзину</button>
+  </div>
+);`;
+
+  const wcCodeSnippet = `class WcProductCard extends HTMLElement {
+  render() {
+    this.shadowRoot.innerHTML = \`
+      <div class="card">
+        <img src="\${this.getAttribute('image-url')}" />
+        <h4>\${this.getAttribute('name')}</h4>
+        <p>\${this.getAttribute('description')}</p>
+        <button>В корзину</button>
+      </div>
+    \`;
+  }
+}`;
+
   return (
     <div>
-      <h2>Сравнение технологий: Карточка товара</h2>
-      <p>Ниже представлены два визуально идентичных компонента, разработанных с использованием разных подходов.</p>
+      <div style={{ marginBottom: '3rem' }}>
+        <h2 style={{ fontSize: '2.25rem', margin: '0 0 0.5rem 0' }}>Аналитический Дашборд</h2>
+        <p style={{ color: '#475569', fontSize: '1.125rem', margin: 0 }}>Результаты комплексного сравнения UI-технологий</p>
+      </div>
+
+      <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
+        <MetricCard title="Мин. время загрузки" value={`${bestLoadTime} мс`} subtitle="Web Components" valueColor="#16A34A" />
+        <MetricCard title="Мин. размер сборки" value={`${bestBundle} KB`} subtitle="Web Components" valueColor="#2563EB" />
+        <MetricCard title="Лучшая поддержка" value={`${maxMaintainability}/10`} subtitle="React / Vue" valueColor="#F59E0B" />
+        <MetricCard title="Лучшая оценка" value={maxScore} subtitle="React" valueColor="#7C3AED" />
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: '#0F172A' }}>Время загрузки (мс) <span style={{fontSize: '0.875rem', color: '#64748B', fontWeight: 'normal'}}>Меньше = лучше</span></h3>
+          {benchmarkResults.map(res => (
+            <div key={`load-${res.technology}`} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ width: '130px', fontWeight: 600, color: '#475569' }}>{res.technology}</div>
+              <div style={{ flex: 1, background: '#F1F5F9', borderRadius: '8px', height: '20px', overflow: 'hidden' }}>
+                <div style={{ width: `${(res.loadTimeMs / 250) * 100}%`, background: '#2563EB', height: '100%', borderRadius: '8px' }} />
+              </div>
+              <div style={{ width: '50px', textAlign: 'right', fontWeight: 600, color: '#0F172A' }}>{res.loadTimeMs}</div>
+            </div>
+          ))}
+        </Card>
+
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: '#0F172A' }}>Размер сборки (KB) <span style={{fontSize: '0.875rem', color: '#64748B', fontWeight: 'normal'}}>Меньше = лучше</span></h3>
+          {benchmarkResults.map(res => (
+            <div key={`bundle-${res.technology}`} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ width: '130px', fontWeight: 600, color: '#475569' }}>{res.technology}</div>
+              <div style={{ flex: 1, background: '#F1F5F9', borderRadius: '8px', height: '20px', overflow: 'hidden' }}>
+                <div style={{ width: `${(res.bundleSizeKb / 100) * 100}%`, background: '#7C3AED', height: '100%', borderRadius: '8px' }} />
+              </div>
+              <div style={{ width: '50px', textAlign: 'right', fontWeight: 600, color: '#0F172A' }}>{res.bundleSizeKb}</div>
+            </div>
+          ))}
+        </Card>
+
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: '#0F172A' }}>Итоговая оценка <span style={{fontSize: '0.875rem', color: '#64748B', fontWeight: 'normal'}}>Больше = лучше</span></h3>
+          {benchmarkResults.map(res => (
+            <div key={`score-${res.technology}`} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ width: '130px', fontWeight: 600, color: '#475569' }}>{res.technology}</div>
+              <div style={{ flex: 1, background: '#F1F5F9', borderRadius: '8px', height: '20px', overflow: 'hidden' }}>
+                <div style={{ width: `${(res.finalScore / 10) * 100}%`, background: '#10B981', height: '100%', borderRadius: '8px' }} />
+              </div>
+              <div style={{ width: '50px', textAlign: 'right', fontWeight: 600, color: '#0F172A' }}>{res.finalScore}</div>
+            </div>
+          ))}
+        </Card>
+      </div>
+
+      <Card style={{ marginBottom: '4rem', padding: 0, overflow: 'hidden' }}>
+        <div style={{ padding: '24px', borderBottom: '1px solid #E2E8F0', background: '#F8FAFC' }}>
+          <h3 style={{ margin: 0, color: '#0F172A' }}>Сводная таблица результатов</h3>
+          <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '0.875rem' }}>* Метрики являются демонстрационно-экспертными. Итоговая оценка рассчитывается по формуле.</p>
+        </div>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ borderCollapse: 'collapse', width: '100%', textAlign: 'center', whiteSpace: 'nowrap' }}>
+            <thead>
+              <tr style={{ background: '#FFFFFF', color: '#475569', fontSize: '0.875rem', borderBottom: '2px solid #E2E8F0' }}>
+                <th style={{ textAlign: 'left', padding: '16px 24px' }}>Технология</th>
+                <th style={{ padding: '16px' }}>Загрузка (мс)</th>
+                <th style={{ padding: '16px' }}>Рендер (мс)</th>
+                <th style={{ padding: '16px' }}>Размер (KB)</th>
+                <th style={{ padding: '16px' }}>Зависимости</th>
+                <th style={{ padding: '16px' }}>Сложность (1-10)</th>
+                <th style={{ padding: '16px' }}>Поддержка</th>
+                <th style={{ padding: '16px' }}>Runtime</th>
+                <th style={{ padding: '16px 24px' }}><b>Итог</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              {benchmarkResults.map((res, i) => (
+                <tr key={res.technology} style={{ borderBottom: i === benchmarkResults.length - 1 ? 'none' : '1px solid #E2E8F0', background: '#FFFFFF' }}>
+                  <td style={{ textAlign: 'left', padding: '16px 24px', fontWeight: 600, color: '#0F172A' }}>{res.technology}</td>
+                  <td style={{ padding: '16px' }}>{res.loadTimeMs}</td>
+                  <td style={{ padding: '16px' }}>{res.renderTimeMs}</td>
+                  <td style={{ padding: '16px' }}>{res.bundleSizeKb}</td>
+                  <td style={{ padding: '16px' }}>{res.dependenciesCount}</td>
+                  <td style={{ padding: '16px' }}>{res.complexityScore}</td>
+                  <td style={{ padding: '16px' }}>{res.maintainabilityScore}</td>
+                  <td style={{ padding: '16px' }}>
+                    <span style={{ background: res.runtimeRequired ? '#FEE2E2' : '#DCFCE7', color: res.runtimeRequired ? '#DC2626' : '#16A34A', padding: '4px 12px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600 }}>
+                      {res.runtimeRequired ? 'Да' : 'Нет'}
+                    </span>
+                  </td>
+                  <td style={{ padding: '16px 24px', fontWeight: 800, color: res.finalScore >= 8 ? '#16A34A' : '#F59E0B', fontSize: '1.125rem' }}>{res.finalScore}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
       
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0' }}>
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Реализация на React</h3>
-          <ReactProductCard product={demoProduct} onAddToCart={handleReactAddToCart} />
-        </div>
-
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Реализация на Web Components</h3>
-          <wc-product-card
-            ref={wcRef}
-            product-id={demoProduct.id}
-            name={demoProduct.name}
-            description={demoProduct.description}
-            price={demoProduct.price}
-            image-url={demoProduct.imageUrl}
-          ></wc-product-card>
-        </div>
+      <div id="demo" style={{ marginBottom: '2rem', scrollMarginTop: '80px' }}>
+        <h2 style={{ fontSize: '2.25rem', margin: '0 0 0.5rem 0' }}>Демонстрация Компонентов</h2>
+        <p style={{ color: '#475569', fontSize: '1.125rem', margin: 0 }}>Сравнение визуальной идентичности и поведения</p>
       </div>
 
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Реализация Модального окна (React)</h3>
-          <ReactModal />
-        </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', marginBottom: '4rem' }}>
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: '#0F172A', borderBottom: '1px solid #E2E8F0', paddingBottom: '1rem' }}>Карточка товара</h3>
+          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1 1 400px' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>React</h4>
+              <div style={{ maxWidth: '400px' }}><ReactProductCard product={demoProduct} onAddToCart={handleReactAddToCart} /></div>
+              <CodeBlock code={reactCodeSnippet} title="React (JSX + Props)" />
+            </div>
+            <div style={{ flex: '1 1 400px' }}>
+              <h4 style={{ color: '#475569', marginTop: 0 }}>Web Components</h4>
+              <div style={{ maxWidth: '400px' }}><wc-product-card ref={wcRef} product-id={demoProduct.id} name={demoProduct.name} description={demoProduct.description} price={demoProduct.price} image-url={demoProduct.imageUrl}></wc-product-card></div>
+              <CodeBlock code={wcCodeSnippet} title="Web Component (Custom Elements + Attributes)" />
+            </div>
+          </div>
+        </Card>
 
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Реализация Модального окна (WC)</h3>
-          <wc-modal></wc-modal>
-        </div>
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: '#0F172A', borderBottom: '1px solid #E2E8F0', paddingBottom: '1rem' }}>Модальное окно и Кнопка подписки</h3>
+          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>React</h4><ReactModal /><ReactStateButton /></div>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>Web Components</h4><wc-modal></wc-modal><wc-state-button></wc-state-button></div>
+          </div>
+        </Card>
+
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: '#0F172A', borderBottom: '1px solid #E2E8F0', paddingBottom: '1rem' }}>Сложные интерактивные формы</h3>
+          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '2rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>React</h4><ReactFeedbackForm /><ReactItemList /></div>
+            <div style={{ flex: '1 1 300px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '2rem' }}><h4 style={{ color: '#475569', marginTop: 0 }}>Web Components</h4><wc-feedback-form></wc-feedback-form><wc-item-list></wc-item-list></div>
+          </div>
+        </Card>
       </div>
 
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Кнопка с состояниями (React)</h3>
-          <ReactStateButton />
-        </div>
-
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Кнопка с состояниями (WC)</h3>
-          <wc-state-button></wc-state-button>
-        </div>
+      <div id="methodology" style={{ marginBottom: '2rem', scrollMarginTop: '80px' }}>
+        <h2 style={{ fontSize: '2.25rem', margin: '0 0 0.5rem 0' }}>Методика и Тестирование</h2>
+        <p style={{ color: '#475569', fontSize: '1.125rem', margin: 0 }}>Описание процесса измерений и QA</p>
       </div>
 
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Форма обратной связи (React)</h3>
-          <ReactFeedbackForm />
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+        <Card>
+          <h3 style={{ marginTop: 0, color: '#0F172A' }}>Как собираются метрики</h3>
+          <ul style={{ color: '#475569', lineHeight: 1.6, paddingLeft: '20px' }}>
+            <li><b>Время загрузки:</b> измеряется через <code style={{background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px'}}>performance.mark()</code> от начала до FCP.</li>
+            <li><b>Размер сборки:</b> анализ production-бандла Vite (папка <code style={{background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px'}}>dist/assets</code>).</li>
+            <li><b>Сложность (1-10):</b> экспертная оценка объема boilerplate-кода и кривой обучения.</li>
+            <li><b>Итоговый балл:</b> рассчитывается по формуле с весами: Производительность (25%), Размер (20%), Качество кода (25%) и т.д.</li>
+          </ul>
+          <p style={{ color: '#64748B', fontSize: '0.875rem', marginTop: '1rem', fontStyle: 'italic' }}>* Часть метрик стенда задана как экспертно-демонстрационные для иллюстрации разницы подходов.</p>
+        </Card>
 
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Форма обратной связи (WC)</h3>
-          <wc-feedback-form></wc-feedback-form>
-        </div>
+        <Card>
+          <h3 style={{ marginTop: 0, color: '#0F172A' }}>Процесс QA и CI/CD</h3>
+          <ul style={{ color: '#475569', lineHeight: 1.6, paddingLeft: '20px' }}>
+            <li><b>Unit-тесты:</b> проверка логики компонентов через <code style={{background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px'}}>Vitest</code>.</li>
+            <li><b>Контейнеризация:</b> multi-stage сборка Docker (Node.js + Nginx).</li>
+            <li><b>CI/CD:</b> автоматическая сборка и деплой на GitHub Pages через GitHub Actions при пуше в <code style={{background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px'}}>main</code>.</li>
+          </ul>
+          <div style={{ background: '#DCFCE7', color: '#166534', padding: '8px 12px', borderRadius: '6px', fontSize: '0.875rem', fontWeight: 600, display: 'inline-block', marginTop: '0.5rem' }}>
+            ✓ Все конвейеры и тесты пройдены
+          </div>
+        </Card>
       </div>
 
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', margin: '2rem 0', padding: '2rem 0', borderTop: '1px solid #ccc' }}>
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Список элементов (React)</h3>
-          <ReactItemList />
-        </div>
-
-        <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
-          <h3>Список элементов (WC)</h3>
-          <wc-item-list></wc-item-list>
-        </div>
-      </div>
-
-      <h3>Анализ и Бенчмаркинг</h3>
-      <table border={1} cellPadding={12} style={{ borderCollapse: 'collapse', width: '100%', background: 'white' }}>
-        <thead>
-          <tr style={{ background: '#e9ecef', textAlign: 'left' }}>
-            <th>Критерий</th>
-            <th>Web Components</th>
-            <th>React</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><b>Инкапсуляция стилей</b></td><td>Нативная (через Shadow DOM). Стили компонента никак не могут сломать глобальную верстку.</td><td>Эмулируется через CSS Modules, Styled Components или BEM.</td></tr>
-          <tr><td><b>Зависимости</b></td><td>0 KB (используется встроенный API браузера).</td><td>~40 KB (react + react-dom).</td></tr>
-          <tr><td><b>Переиспользуемость</b></td><td>Максимальная. Можно вставить в любой проект (Vue, Angular, чистый HTML).</td><td>Ограничена экосистемой React.</td></tr>
-          <tr><td><b>Сложность разработки</b></td><td>Средняя. Нужно вручную управлять DOM-узлами и подписками на атрибуты.</td><td>Низкая. Декларативный подход JSX сильно ускоряет создание UI.</td></tr>
-        </tbody>
-      </table>
+      <Card id="conclusions" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', scrollMarginTop: '80px' }}>
+        <h3 style={{ marginTop: 0, color: '#1E3A8A' }}>Выводы по результатам сравнения</h3>
+        <ul style={{ color: '#1E3A8A', lineHeight: 1.6, paddingLeft: '20px', marginBottom: '1.5rem' }}>
+          <li>🏆 <b>Самая быстрая и легковесная:</b> Web Components (0 зависимостей, мин. вес).</li>
+          <li>🏆 <b>Лучшая поддержка и экосистема:</b> React / Vue (мощный инструментарий).</li>
+          <li>🏆 <b>Лучшая для Enterprise:</b> Angular (встроенная архитектура).</li>
+        </ul>
+        <p style={{ marginTop: 0, color: '#1E3A8A', lineHeight: 1.6 }}>По результатам сравнения <b>Web Components</b> показали лучший результат по минимальному размеру сборки и отсутствию runtime-зависимостей. Однако сложность разработки на чистом API выше.</p>
+        <p style={{ color: '#1E3A8A', lineHeight: 1.6 }}><b>React</b> и <b>Vue</b> показали более высокий уровень удобства разработки и поддержки, что делает их отличным выбором для сложных бизнес-приложений, несмотря на больший размер бандла.</p>
+        <p style={{ marginBottom: 0, color: '#1E3A8A', lineHeight: 1.6 }}><b>Angular</b> уступает по размеру сборки и времени загрузки в рамках данного стенда, но остаётся мощным инструментом для крупных корпоративных приложений благодаря строгой архитектуре и развитой экосистеме.</p>
+      </Card>
     </div>
   );
 };
